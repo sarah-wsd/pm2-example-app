@@ -6,14 +6,15 @@
   "precommit": "lint",
   "scripts": {
     "build": "run-s build:clean build:build",
-    "build:clean": "rimraf dist",
     "build:build": "babel src --out-dir dist",
+    "build:clean": "rimraf dist",
     "build:dev": "babel src --watch --out-dir dist",
+    "lint": "eslint --fix src",
+    "pm2:delete": "pm2 delete ecosystem.config.js",
+    "pm2:start": "pm2 start ecosystem.config.js",
     "start": "run-s build start:pm2",
-    "start-dev": "tmex -n build:dev start:pm2",
-    "start:pm2": "pm2 start ecosystem.config.js",
-    "stop": "pm2 delete all",
-    "lint": "eslint --fix src"
+    "start-dev": "npm run build:clean && tmex -n build:dev start:pm2",
+    "start:pm2": "run-s pm2:delete pm2:start"
   },
   "keywords": ["pm2", "node", "express", "babel", "eslint"],
   "author": "Francesco Liuzzi",
